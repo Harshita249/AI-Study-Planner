@@ -1,0 +1,15 @@
+# Ignore the heavy library folders
+node_modules/
+venv/
+env/
+
+# Ignore local environment variables (Security)
+.env
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore build files
+build/
+dist/
