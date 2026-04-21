@@ -1,46 +1,53 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const InputForm = ({ setReport, setIsProcessing, isProcessing }) => {
-    const [formData, setFormData] = useState({ hours: '', attendance: '', marks: '' });
+const InputForm = ({ setResults }) => {
+    const [formData, setFormData] = useState({
+        study_hours: '',
+        attendance: '',
+        previous_marks: ''
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsProcessing(true);
+
+        // Strict Validation Rules
+        if (formData.study_hours > 24) return alert("Time cannot exceed 24 hours!");
+        if (formData.attendance > 100) return alert("Attendance cannot exceed 100%!");
+        if (formData.previous_marks > 100) return alert("Previous marks cannot exceed 100!");
+
         try {
-            const res = await axios.post('http://127.0.0.1:8000/predict', {
-                hours: parseFloat(formData.hours),
-                attendance: parseFloat(formData.attendance),
-                marks: parseFloat(formData.marks)
-            });
-            setReport(res.data);
-        } catch (err) {
-            alert("Connection error. Check backend terminal.");
-        } finally {
-            setIsProcessing(false);
+            const response = await axios.post('http://127.0.0.1:8000/predict', formData);
+            setResults(response.data);
+        } catch (error) {
+            console.error("Backend Error:", error);
+            alert("Make sure the Backend Server is running!");
         }
     };
 
     return (
-        <div className="form-container">
-            <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                    <label>Study Hours</label>
-                    <input type="number" value={formData.hours} onChange={(e) => setFormData({...formData, hours: e.target.value})} required />
-                </div>
-                <div className="input-group">
-                    <label>Attendance %</label>
-                    <input type="number" value={formData.attendance} onChange={(e) => setFormData({...formData, attendance: e.target.value})} required />
-                </div>
-                <div className="input-group">
-                    <label>Previous Marks</label>
-                    <input type="number" value={formData.marks} onChange={(e) => setFormData({...formData, marks: e.target.value})} required />
-                </div>
-                <button type="submit" disabled={isProcessing}>
-                    {isProcessing ? "PROCESSING..." : "ANALYZE NOW"}
-                </button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit} className="glass-form">
+            <h2 className="glow-text">Study Analysis</h2>
+            <input 
+                type="number" 
+                placeholder="Study Hours (Max 24)" 
+                onChange={(e) => setFormData({...formData, study_hours: e.target.value})} 
+                required 
+            />
+            <input 
+                type="number" 
+                placeholder="Attendance % (Max 100)" 
+                onChange={(e) => setFormData({...formData, attendance: e.target.value})} 
+                required 
+            />
+            <input 
+                type="number" 
+                placeholder="Previous Marks (Max 100)" 
+                onChange={(e) => setFormData({...formData, previous_marks: e.target.value})} 
+                required 
+            />
+            <button type="submit" className="aurora-btn">Generate Plan</button>
+        </form>
     );
 };
 
