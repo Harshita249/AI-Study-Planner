@@ -9,53 +9,97 @@ body {
   color: white;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Glassmorphism Form with Safari Support */
 .glass-form {
   background: var(--glass);
+  -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 24px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 450px;
 }
 
+/* Glowing Text with Compatibility Fixes */
 .glow-text {
   background: linear-gradient(to right, var(--aurora-blue), var(--aurora-purple));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 2rem;
+  font-size: 2.2rem;
   text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
 }
 
-.aurora-btn {
+/* Input Fields styling */
+input {
   width: 100%;
   padding: 12px;
+  margin: 10px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  outline: none;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: var(--aurora-blue);
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+}
+
+/* Interactive Aurora Button */
+.aurora-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
   border-radius: 12px;
   border: none;
   background: linear-gradient(45deg, #3a7bd5, #00d2ff);
   color: white;
   font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
 }
 
 .aurora-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.5);
 }
 
 /* Prediction Result Cards */
 .insight-card {
   background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-left: 4px solid var(--aurora-blue);
   padding: 20px;
   margin: 15px 0;
   border-radius: 0 16px 16px 0;
-  transition: 0.3s;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .insight-card:hover {
   background: rgba(255, 255, 255, 0.12);
   transform: translateX(10px);
+}
+
+.insight-title {
+  color: var(--aurora-blue);
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
