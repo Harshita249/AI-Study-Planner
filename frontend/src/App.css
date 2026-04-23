@@ -8,98 +8,119 @@ body {
   background: radial-gradient(circle at top right, #1a1a2e, #0f0f1a);
   color: white;
   font-family: 'Inter', sans-serif;
-  min-height: 100vh;
   margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
 }
 
-/* Glassmorphism Form with Safari Support */
+.content-wrapper {
+  width: 100%;
+  max-width: 450px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
 .glass-form {
   background: var(--glass);
   -webkit-backdrop-filter: blur(15px);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2.5rem;
+  padding: 30px;
   border-radius: 24px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-  width: 100%;
-  max-width: 450px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Glowing Text with Compatibility Fixes */
 .glow-text {
   background: linear-gradient(to right, var(--aurora-blue), var(--aurora-purple));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 2.2rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
   font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Input Fields styling */
 input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   color: white;
-  outline: none;
   box-sizing: border-box;
 }
 
-input:focus {
-  border-color: var(--aurora-blue);
-  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
-}
-
-/* Interactive Aurora Button */
 .aurora-btn {
   width: 100%;
-  padding: 14px;
-  margin-top: 15px;
+  padding: 15px;
+  margin-top: 10px;
   border-radius: 12px;
   border: none;
   background: linear-gradient(45deg, #3a7bd5, #00d2ff);
   color: white;
   font-weight: bold;
-  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
 
 .aurora-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(0, 210, 255, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4);
 }
 
-/* Prediction Result Cards */
+/* Results Section Styling */
+.results-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.performance-label {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.score-val {
+  font-size: 4.5rem;
+  margin: 5px 0;
+  font-weight: 900;
+  text-shadow: 0 0 30px rgba(0, 210, 255, 0.2);
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 25px;
+  border: 1px solid;
+}
+
 .insight-card {
   background: var(--glass);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   border-left: 4px solid var(--aurora-blue);
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 0 16px 16px 0;
-  transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.insight-card:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateX(10px);
+  padding: 18px;
+  margin-top: 15px;
+  border-radius: 0 12px 12px 0;
+  text-align: left;
 }
 
 .insight-title {
   color: var(--aurora-blue);
+  font-size: 0.75rem;
   font-weight: bold;
+  text-transform: uppercase;
   display: block;
   margin-bottom: 5px;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

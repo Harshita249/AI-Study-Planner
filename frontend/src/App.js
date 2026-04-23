@@ -1,33 +1,60 @@
 import React, { useState } from 'react';
-import './App.css';
 import InputForm from './components/InputForm';
+import './App.css';
 
 function App() {
-  const [report, setReport] = useState(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [results, setResults] = useState(null);
+
+  // Score ke basis par Category aur Color decide karne wala function
+  const getCategoryInfo = (score) => {
+    if (score >= 90) return { label: "Excellent", color: "#00ff88" };
+    if (score >= 75) return { label: "Good", color: "#00d2ff" };
+    if (score >= 50) return { label: "Average", color: "#f1c40f" };
+    return { label: "Needs Focus", color: "#ff4d4d" };
+  };
+
+  const category = results ? getCategoryInfo(results.score) : null;
 
   return (
-    <div className="App">
-      <h2 style={{textAlign: 'center', marginBottom: '2rem'}}>Predictor <span className="status-warning">AI</span></h2>
-      
-      <InputForm setReport={setReport} setIsProcessing={setIsProcessing} isProcessing={isProcessing} />
+    <div className="main-container">
+      <div className="content-wrapper">
+        <InputForm setResults={setResults} />
+        
+        {results && (
+          <div className="results-container">
+            {/* 1. Sabse pehle text */}
+            <p className="performance-label">Predicted Performance</p>
+            
+            {/* 2. Uske neeche Score Value */}
+            <h1 className="score-val" style={{ color: category.color }}>
+                {results.score}%
+            </h1>
+            
+            {/* 3. Category Badge */}
+            <div className="category-badge" style={{ 
+              borderColor: category.color, 
+              color: category.color,
+              backgroundColor: `${category.color}15` 
+            }}>
+                {category.label}
+            </div>
 
-      {report && !isProcessing && (
-        <div className="report-card">
-          <div className="score-display">
-            <div className={`status-pill ${report.visual.pClass}`}>{report.visual.pLabel}</div>
-            <div className={`score-visualizer ${report.visual.pClass}`}>{report.score}%</div>
-          </div>
-          
-          <div className="insights-list">
-            {report.insights.map((msg, i) => (
-              <div key={i} className="insight-item">
-                <strong>Insight {i+1}:</strong> {msg}
+            {/* 4. Logic: Agar Excellent (90+) hai to Improvement box mat dikhao */}
+            {category.label !== "Excellent" && (
+              <div className="insight-card">
+                <span className="insight-title">Area of Improvement</span>
+                <p>{results.improvement_area}</p>
               </div>
-            ))}
+            )}
+
+            {/* 5. Expert Tip (Humesha dikhega) */}
+            <div className="insight-card">
+              <span className="insight-title">Expert Tip</span>
+              <p>{results.expert_tip}</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
