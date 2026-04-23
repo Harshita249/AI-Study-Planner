@@ -1,54 +1,24 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const InputForm = ({ setResults }) => {
-    const [formData, setFormData] = useState({
-        study_hours: '',
-        attendance: '',
-        previous_marks: ''
-    });
+    // 1. Client-side check to prevent the 422 error in the first place
+    if (formData.study_hours > 24 || formData.attendance > 100 || formData.previous_marks >= 100) {
+        alert("Please enter valid data: Hours <= 24, Attendance <= 100, Marks < 100");
+        return;
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        // Strict Validation Rules
-        if (formData.study_hours > 24) return alert("Time cannot exceed 24 hours!");
-        if (formData.attendance > 100) return alert("Attendance cannot exceed 100%!");
-        if (formData.previous_marks > 100) return alert("Previous marks cannot exceed 100!");
-
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/predict', formData);
-            setResults(response.data);
-        } catch (error) {
-            console.error("Backend Error:", error);
-            alert("Make sure the Backend Server is running!");
+    try {
+        // 2. Ensure keys match the Python "StudySession" class exactly
+        const response = await axios.post('http://127.0.0.1:8000/predict', {
+            study_hours: parseFloat(formData.study_hours),
+            attendance: parseFloat(formData.attendance),
+            previous_marks: parseFloat(formData.previous_marks)
+        });
+        setResults(response.data);
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            console.log("Validation Error Details:", error.response.data.detail);
+            alert("Backend rejected the data. Check the console for details.");
         }
-    };
-
-    return (
-        <form onSubmit={handleSubmit} className="glass-form">
-            <h2 className="glow-text">Study Analysis</h2>
-            <input 
-                type="number" 
-                placeholder="Study Hours (Max 24)" 
-                onChange={(e) => setFormData({...formData, study_hours: e.target.value})} 
-                required 
-            />
-            <input 
-                type="number" 
-                placeholder="Attendance % (Max 100)" 
-                onChange={(e) => setFormData({...formData, attendance: e.target.value})} 
-                required 
-            />
-            <input 
-                type="number" 
-                placeholder="Previous Marks (Max 100)" 
-                onChange={(e) => setFormData({...formData, previous_marks: e.target.value})} 
-                required 
-            />
-            <button type="submit" className="aurora-btn">Generate Plan</button>
-        </form>
-    );
+    }
 };
-
-export default InputForm;
